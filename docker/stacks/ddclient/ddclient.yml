@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+   ddclient:
+      image: lscr.io/linuxserver/ddclient
+      container_name: ddclient
+      networks:
+         - ddclient
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+      volumes:
+         - ${APPS_DIR}/ddclient:/config
+      restart: unless-stopped
+
+networks:
+   ddclient:
+      name: ddclient

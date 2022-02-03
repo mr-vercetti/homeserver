@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+   nextcloud-cache:
+      image: redis
+      container_name: nextcloud-cache
+      networks:
+         - nextcloud
+      ports:
+         - 6379:6379
+      restart: unless-stopped
+
+   nextcloud-db:
+      image: lscr.io/linuxserver/mariadb
+      container_name: nextcloud-db
+      networks:
+         - nextcloud
+      environment:
+         - PUID=1000
+         - PGID=1000
+         - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
+         - TZ=${TIMEZONE}
+         - MYSQL_DATABASE=${DB_NAME}
+         - MYSQL_USER=${DB_USER}
+         - MYSQL_PASSWORD=${DB_PW}
+      volumes:
+         - ${APPS_DIR}/nextcloud-db:/config
+      ports:
+         - 3306:3306
+      restart: unless-stopped
+   
+   nextcloud:
+      image: lscr.io/linuxserver/nextcloud
+      container_name: nextcloud
+      networks:
+         - proxy
+         - nextcloud
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+      volumes:
+         - ${APPS_DIR}/nextcloud:/config
+         - ${DATA_DIR}/nextcloud-data:/data
+      ports:
+         - 8443:443
+      restart: unless-stopped
+      depends_on:
+         - nextcloud-db
+         - nextcloud-cache
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   nextcloud:
+      name: nextcloud

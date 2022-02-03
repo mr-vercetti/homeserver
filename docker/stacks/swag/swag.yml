@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+   swag:
+      image: lscr.io/linuxserver/swag
+      container_name: swag
+      networks:
+         - proxy
+      cap_add:
+         - NET_ADMIN
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+         - URL=${DOMAIN}
+         - SUBDOMAINS=wildcard
+         - VALIDATION=dns
+         - DNSPLUGIN=cloudflare
+      volumes:
+         - ${APPS_DIR}/swag:/config
+      ports:
+         - 443:443
+         - 80:80
+      restart: unless-stopped
+
+networks:
+   proxy:
+      name: proxy

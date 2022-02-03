@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+   wireguard:
+      image: lscr.io/linuxserver/wireguard
+      container_name: wireguard
+      networks:
+         - wireguard
+         - proxy
+      cap_add:
+         - NET_ADMIN
+         - SYS_MODULE
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+         - SERVERURL=${WG_URL}
+         - SERVERPORT=51820
+         - PEERS=${WG_PEERS}
+         - PEERDNS=auto
+         - ALLOWEDIPS=${WG_ALLOWEDIPS}
+      volumes:
+         - ${APPS_DIR}/wireguard:/config
+         - /lib/modules:/lib/modules
+      ports:
+         - 51820:51820/udp
+      sysctls:
+         - net.ipv4.conf.all.src_valid_mark=1
+      restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   wireguard:
+      name: wireguard

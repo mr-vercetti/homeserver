@@ -1,0 +1,5 @@
+# Ignore docker env file
+docker/.env
+
+# Ignore appdata dir
+docker/appdata/
