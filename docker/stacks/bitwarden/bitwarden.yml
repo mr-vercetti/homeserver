@@ -1,0 +1,28 @@
+services:
+   bitwarden:
+      image: vaultwarden/server
+      container_name: bitwarden
+      networks:
+         - bitwarden
+         - proxy
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+         - DOMAIN=${BW_URL}
+         - WEBSOCKET_ENABLED=true
+         - SIGNUPS_ALLOWED=false
+         - ADMIN_TOKEN=${BW_ADMIN_TOKEN}
+         - LOG_FILE=/data/log/bitwarden.log
+      volumes:
+         - ${APPS_DIR}/bitwarden:/data
+      ports:
+         - 8080:80
+      restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   bitwarden:
+      name: bitwarden
