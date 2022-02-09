@@ -2,6 +2,7 @@ services:
    nextcloud-cache:
       image: redis
       container_name: nextcloud-cache
+      user: ${PUID}:${PGID}
       networks:
          - nextcloud
       ports:
@@ -14,8 +15,8 @@ services:
       networks:
          - nextcloud
       environment:
-         - PUID=1000
-         - PGID=1000
+         - PUID=${PUID}
+         - PGID=${PGID}
          - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
          - TZ=${TIMEZONE}
          - MYSQL_DATABASE=${DB_NAME}
