@@ -12,11 +12,13 @@ parity /mnt/parity/snapraid.parity
 # Format: "content FILE_PATH"
 content /var/snapraid.content
 content /mnt/disk1/.snapraid.content
+content /mnt/disk2/.snapraid.content
  
 # Defines the data disks to use
 # The order is relevant for parity, do not change it
 # Format: "disk DISK_NAME DISK_MOUNT_POINT"
 disk d1 /mnt/disk1
+disk d2 /mnt/disk2
  
 # Excludes hidden files and directories (uncomment to enable).
 #nohidden
