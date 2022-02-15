@@ -4,7 +4,6 @@ services:
       container_name: wireguard
       networks:
          - wireguard
-         - proxy
       cap_add:
          - NET_ADMIN
          - SYS_MODULE
@@ -27,8 +26,5 @@ services:
       restart: unless-stopped
 
 networks:
-   proxy:
-      external:
-         name: proxy
    wireguard:
       name: wireguard
