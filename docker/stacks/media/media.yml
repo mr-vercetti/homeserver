@@ -1,0 +1,114 @@
+services:
+   jellyfin:
+      image: lscr.io/linuxserver/jellyfin
+      container_name: jellyfin
+      networks:
+         - proxy
+         - media
+      group_add:
+         - ${JF_RENDER_GROUP}
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+         - DOCKER_MODS=linuxserver/mods:jellyfin-amd
+      volumes:
+         - ${APPS_DIR}/jellyfin:/config
+         - ${DATA_DIR}/media/movies:/data/movies:ro
+         - ${DATA_DIR}/media/tvshows:/data/tvshows:ro
+      ports:
+         - 8096:8096
+      devices:
+         - /dev/dri/renderD128:/dev/dri/renderD128
+         - /dev/dri/card0:/dev/dri/card0
+      restart: unless-stopped
+   
+   radarr:
+      image: lscr.io/linuxserver/radarr
+      container_name: radarr
+      networks:
+         - media
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+      volumes:
+         - ${APPS_DIR}/radarr:/config
+         - ${DATA_DIR}/media/movies:/movies
+         - ${DATA_DIR}/downloads:/downloads
+      ports:
+         - 7878:7878
+      restart: unless-stopped
+
+   sonarr:
+      image: lscr.io/linuxserver/sonarr
+      container_name: sonarr
+      networks:
+         - media
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+      volumes:
+         - ${APPS_DIR}/sonarr:/config
+         - ${DATA_DIR}/media/tvshows:/tvshows
+         - ${DATA_DIR}/downloads:/downloads
+      ports:
+         - 8989:8989
+      restart: unless-stopped
+
+   jackett:
+      image: lscr.io/linuxserver/jackett
+      container_name: jackett
+      networks:
+         - media
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+      volumes:
+         - ${APPS_DIR}/jackett:/config
+      ports:
+         - 9117:9117
+      restart: unless-stopped
+
+   delugevpn:
+      image: binhex/arch-delugevpn
+      container_name: delugevpn
+      networks:
+         - media
+      cap_add:
+            - NET_ADMIN
+      environment:
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - TZ=${TIMEZONE}
+            - VPN_ENABLED=yes
+            - VPN_PROV=custom
+            - VPN_CLIENT=wireguard
+            - ENABLE_PRIVOXY=yes
+            - LAN_NETWORK=${LAN_NETWORK}
+            - NAME_SERVERS=1.1.1.1, 1.0.0.1
+            - DELUGE_DAEMON_LOG_LEVEL=info
+            - DELUGE_WEB_LOG_LEVEL=info
+            - DEBUG=true
+            - UMASK=000
+      volumes:
+            - ${APPS_DIR}/deluge/config:/config
+            - ${DATA_DIR}/downloads:/data
+            - /etc/localtime:/etc/localtime:ro
+      ports:
+            - 8112:8112
+            - 58846:58846
+            - 8118:8118
+      sysctls:
+            - "net.ipv4.conf.all.src_valid_mark=1"
+      privileged: true
+      restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   media:
+      name: media
