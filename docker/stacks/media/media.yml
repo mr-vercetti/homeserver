@@ -78,31 +78,31 @@ services:
       networks:
          - media
       cap_add:
-            - NET_ADMIN
+         - NET_ADMIN
       environment:
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - TZ=${TIMEZONE}
-            - VPN_ENABLED=yes
-            - VPN_PROV=custom
-            - VPN_CLIENT=wireguard
-            - ENABLE_PRIVOXY=yes
-            - LAN_NETWORK=${LAN_NETWORK}
-            - NAME_SERVERS=1.1.1.1, 1.0.0.1
-            - DELUGE_DAEMON_LOG_LEVEL=info
-            - DELUGE_WEB_LOG_LEVEL=info
-            - DEBUG=true
-            - UMASK=000
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+         - VPN_ENABLED=yes
+         - VPN_PROV=custom
+         - VPN_CLIENT=wireguard
+         - ENABLE_PRIVOXY=yes
+         - LAN_NETWORK=${LAN_NETWORK}
+         - NAME_SERVERS=1.1.1.1, 1.0.0.1
+         - DELUGE_DAEMON_LOG_LEVEL=info
+         - DELUGE_WEB_LOG_LEVEL=info
+         - DEBUG=true
+         - UMASK=000
       volumes:
-            - ${APPS_DIR}/deluge/config:/config
-            - ${DATA_DIR}/downloads:/data
-            - /etc/localtime:/etc/localtime:ro
+         - ${APPS_DIR}/delugevpn:/config
+         - ${DATA_DIR}/downloads:/data
+         - /etc/localtime:/etc/localtime:ro
       ports:
-            - 8112:8112
-            - 58846:58846
-            - 8118:8118
+         - 8112:8112
+         - 58846:58846
+         - 8118:8118
       sysctls:
-            - "net.ipv4.conf.all.src_valid_mark=1"
+         - "net.ipv4.conf.all.src_valid_mark=1"
       privileged: true
       restart: unless-stopped
 
