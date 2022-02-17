@@ -112,7 +112,7 @@ services:
          - UMASK=000
       volumes:
          - ${APPS_DIR}/delugevpn:/config
-         - ${DATA_DIR}/downloads:/data
+         - ${DATA_DIR}/downloads:/downloads
          - /etc/localtime:/etc/localtime:ro
       ports:
          - 8112:8112
