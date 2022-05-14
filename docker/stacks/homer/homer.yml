@@ -4,9 +4,7 @@ services:
       container_name: homer
       networks:
          - homer
-      environment:
-         - UID=${PUID}
-         - GID=${PGID}
+      user: ${PUID}:${PGID}
       volumes:
          - ${APPS_DIR}/homer:/www/assets
       ports:
