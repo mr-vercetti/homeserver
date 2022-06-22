@@ -1,0 +1,23 @@
+services:
+   ytdl-material:
+      image: tzahi12345/youtubedl-material
+      container_name: ytdl-material
+      networks:
+         - ytdl-material
+      environment:
+         - UID=${PUID}
+         - GID=${PGID}
+         - ALLOW_CONFIG_MUTATIONS=true
+      volumes:
+         - ${APPS_DIR}/ytdl-material:/app/appdata
+         - ${DATA_DIR}/ytdl/audio:/app/audio
+         - ${DATA_DIR}/ytdl/video:/app/video
+         - ${DATA_DIR}/ytdl/subscriptions:/app/subscriptions
+         - ${DATA_DIR}/ytdl/users:/app/users
+      ports:
+         - "8998:17442"
+      restart: unless-stopped
+
+networks:
+   ytdl-material:
+      name: ytdl-material

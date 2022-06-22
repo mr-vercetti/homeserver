@@ -15,6 +15,7 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [Sonarr](https://github.com/linuxserver/docker-sonarr) - TV show collection manager
 * [Bazarr](https://github.com/linuxserver/docker-bazarr) - subtitle manager
 * [delugevpn](https://github.com/binhex/arch-delugevpn) - torrent client with VPN and Privoxy
+* [YoutubeDL](https://github.com/Tzahi12345/YoutubeDL-Material) - Youtube media downloader
 
 ### Personal cloud
 * [Nextcloud](https://github.com/linuxserver/docker-nextcloud) - filesync/cloud solution
