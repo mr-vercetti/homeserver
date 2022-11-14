@@ -8,6 +8,8 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [ddclient](https://github.com/linuxserver/docker-ddclient) - DDNS
 * [SWAG](https://github.com/linuxserver/docker-swag) - reverse proxy with SSL certbot and fail2ban
 * [watchtower](https://github.com/containrrr/watchtower) - notifications about docker image updates
+* [Duplicati](https://github.com/linuxserver/docker-duplicati) - cool backup
+  software
 
 ### Media
 * [Jellyfin](https://github.com/linuxserver/docker-jellyfin) - media server

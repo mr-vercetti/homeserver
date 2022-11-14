@@ -1,0 +1,21 @@
+services:
+  duplicati:
+    image: linuxserver/duplicati
+    container_name: duplicati
+    networks:
+      - duplicati
+    environment:
+      - PUID=${DUPLICATI_UID}
+      - PGID=${DUPLICATI_GID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${APPS_DIR}/duplicati:/config
+      - ${BACKUP_DIR}:/backups
+      - ${BACKUP_SOURCE_DIR}:/source
+    ports:
+      - "8200:8200"
+    restart: unless-stopped
+
+networks:
+   duplicati:
+      name: duplicati
