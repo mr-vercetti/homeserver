@@ -14,11 +14,13 @@ services:
          - SUBDOMAINS=wildcard
          - VALIDATION=dns
          - DNSPLUGIN=cloudflare
+         - EXTRA_DOMAINS=${EXTRA_DOMAINS}
+         - PROPAGATION=30
       volumes:
          - ${APPS_DIR}/swag:/config
       ports:
-         - 443:443
-         - 80:80
+         - "443:443"
+         - "80:80"
       restart: unless-stopped
 
 networks:

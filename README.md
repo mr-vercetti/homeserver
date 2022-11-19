@@ -24,6 +24,10 @@ All services are deployed using Docker compose and are run as a non-root user.
   * [Redis](https://github.com/docker-library/redis) - cache service
   * [MariaDB](https://github.com/linuxserver/docker-mariadb) - database
 
+### Software development
+* [Gitea](https://github.com/go-gitea/gitea) - git web service
+* [Drone](https://github.com/harness/drone) - ci/cd
+
 ### Other
 * [Bitwarden](https://github.com/dani-garcia/vaultwarden) - the best password manager
 * [Wireguard](https://github.com/linuxserver/docker-wireguard) - VPN server
