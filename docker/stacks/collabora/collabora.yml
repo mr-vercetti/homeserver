@@ -1,0 +1,23 @@
+services:
+  collabora:
+    image: collabora/code
+    container_name: collabora
+    privileged: true
+    environment:
+      - password=${COLLABORA_PASSWORD}
+      - username=${COLLABORA_USERNAME}
+      - aliasgroup1=${COLLABORA_DOMAIN}  
+      - extra_params=--o:ssl.enable=true
+    networks:
+      - proxy
+      - collabora
+    ports:
+      - "9980:9980"
+    restart: on-failure
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   collabora:
+      name: collabora

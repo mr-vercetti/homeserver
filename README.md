@@ -1,4 +1,6 @@
 # mr-vercetti/homeserver
+![Dashboard](.misc/dashboard.jpg)
+
 This is my home server project that I started because I value the privacy of my data, I don't like paying subscriptions and because self-hosting is really fucking cool.
 
 ## Services
@@ -23,6 +25,7 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [Nextcloud](https://github.com/linuxserver/docker-nextcloud) - filesync/cloud solution
   * [Redis](https://github.com/docker-library/redis) - cache service
   * [MariaDB](https://github.com/linuxserver/docker-mariadb) - database
+* [Collabora](https://github.com/CollaboraOnline/online) - office suite
 
 ### Software development
 * [Gitea](https://github.com/go-gitea/gitea) - git web service
@@ -32,6 +35,7 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [Bitwarden](https://github.com/dani-garcia/vaultwarden) - the best password manager
 * [Wireguard](https://github.com/linuxserver/docker-wireguard) - VPN server
 * [Homer](https://github.com/bastienwirtz/homer) - simple dashboard to keep services on hand
+* [mr.vercetti.cc](https://git.vercetti.cc/mr-vercetti/mr.vercetti.cc) - my personal blog
 
 ## Storage solution
 I went with [MergerFS](https://github.com/trapexit/mergerfs) and [SnapRAID](https://github.com/amadvance/snapraid), which allows me a great deal of flexibility and still keeps my data safe. Array is synchronized and scrubbed automatically via [snapraid-runner](https://github.com/Chronial/snapraid-runner) running from crontab.

@@ -1,0 +1,15 @@
+services:
+   mrvercetticc:
+      image: mrvercetti/mrvercetticc
+      container_name: mrvercetticc
+      networks:
+         - mrvercetticc
+         - proxy
+      restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   mrvercetticc:
+      name: mrvercetticc
