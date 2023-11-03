@@ -24,7 +24,7 @@ services:
       restart: unless-stopped
    
    radarr:
-      image: lscr.io/linuxserver/radarr
+      image: lscr.io/linuxserver/radarr:4.3.2
       container_name: radarr
       networks:
          - media
@@ -57,9 +57,9 @@ services:
          - 8989:8989
       restart: unless-stopped
 
-   jackett:
-      image: lscr.io/linuxserver/jackett
-      container_name: jackett
+   prowlarr:
+      image: lscr.io/linuxserver/prowlarr
+      container_name: prowlarr
       networks:
          - media
       environment:
@@ -67,9 +67,9 @@ services:
          - PGID=${PGID}
          - TZ=${TIMEZONE}
       volumes:
-         - ${APPS_DIR}/jackett:/config
+         - ${APPS_DIR}/prowlarr:/config
       ports:
-         - 9117:9117
+         - 9696:9696
       restart: unless-stopped
    
    bazarr:
