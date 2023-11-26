@@ -12,6 +12,7 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [watchtower](https://github.com/containrrr/watchtower) - notifications about docker image updates
 * [Duplicati](https://github.com/linuxserver/docker-duplicati) - cool backup
   software
+* [Netdata](https://github.com/netdata/netdata) - real time monitoring solution
 
 ### Media
 * [Jellyfin](https://github.com/linuxserver/docker-jellyfin) - media server
@@ -20,12 +21,14 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [Bazarr](https://github.com/linuxserver/docker-bazarr) - subtitle manager
 * [delugevpn](https://github.com/binhex/arch-delugevpn) - torrent client with VPN and Privoxy
 * [YoutubeDL](https://github.com/Tzahi12345/YoutubeDL-Material) - Youtube media downloader
+* [Prowlarr](https://github.com/Prowlarr/Prowlarr) - indexer
 
 ### Personal cloud
 * [Nextcloud](https://github.com/linuxserver/docker-nextcloud) - filesync/cloud solution
   * [Redis](https://github.com/docker-library/redis) - cache service
   * [MariaDB](https://github.com/linuxserver/docker-mariadb) - database
 * [Collabora](https://github.com/CollaboraOnline/online) - office suite
+* [static-file-server](https://github.com/halverneus/static-file-server) - static file server
 
 ### Software development
 * [Gitea](https://github.com/go-gitea/gitea) - git web service
