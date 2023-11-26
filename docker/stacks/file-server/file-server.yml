@@ -1,0 +1,21 @@
+services:
+   homer:
+      image: halverneus/static-file-server
+      container_name: file-server
+      networks:
+         - file-server
+         - proxy
+      volumes:
+         - ${DATA_DIR}/file-server:/content/files
+      environment:
+         - FOLDER=/content/files
+      ports:
+         - 8097:8080
+      restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   file-server:
+      name: file-server
