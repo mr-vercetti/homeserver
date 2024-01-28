@@ -1,0 +1,42 @@
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma
+    ports:
+      - 3111:3001
+    volumes:
+      - ${APPS_DIR}/uptime-kuma:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy
+      - monitoring
+    restart: unless-stopped
+
+  scrutiny:
+    container_name: scrutiny
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    ports:
+      - "8283:8080" # webapp
+      - "8286:8086" # influxDB admin
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ${APPS_DIR}/scrutiny/config:/opt/scrutiny/config
+      - ${APPS_DIR}/scrutiny/influxdb:/opt/scrutiny/influxdb
+    networks:
+      - monitoring
+    devices:
+      - "/dev/sda"
+      - "/dev/sdb"
+      - "/dev/sdc"
+      - "/dev/nvme0"
+    restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   monitoring:
+      name: monitoring

@@ -12,7 +12,8 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [watchtower](https://github.com/containrrr/watchtower) - notifications about docker image updates
 * [Duplicati](https://github.com/linuxserver/docker-duplicati) - cool backup
   software
-* [Netdata](https://github.com/netdata/netdata) - real time monitoring solution
+* [Uptime Kuma](https://github.com/louislam/uptime-kuma) - fancy uptime monitoring tool
+* [Scrutiny](https://github.com/AnalogJ/scrutiny) - S.M.A.R.T monitoring
 
 ### Media
 * [Jellyfin](https://github.com/linuxserver/docker-jellyfin) - media server
@@ -22,6 +23,8 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [delugevpn](https://github.com/binhex/arch-delugevpn) - torrent client with VPN and Privoxy
 * [YoutubeDL](https://github.com/Tzahi12345/YoutubeDL-Material) - Youtube media downloader
 * [Prowlarr](https://github.com/Prowlarr/Prowlarr) - indexer
+* [Lidarr](https://github.com/Lidarr/Lidarr) - music library manager
+* [miniDLNA](https://github.com/vladgh/docker_base_images/tree/main/minidlna) - DLNA server
 
 ### Personal cloud
 * [Nextcloud](https://github.com/linuxserver/docker-nextcloud) - filesync/cloud solution
