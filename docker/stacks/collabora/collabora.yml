@@ -2,7 +2,6 @@ services:
   collabora:
     image: collabora/code
     container_name: collabora
-    privileged: true
     environment:
       - password=${COLLABORA_PASSWORD}
       - username=${COLLABORA_USERNAME}
