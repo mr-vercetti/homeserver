@@ -31,7 +31,6 @@ All services are deployed using Docker compose and are run as a non-root user.
   * [Redis](https://github.com/docker-library/redis) - cache service
   * [MariaDB](https://github.com/linuxserver/docker-mariadb) - database
 * [Collabora](https://github.com/CollaboraOnline/online) - office suite
-* [static-file-server](https://github.com/halverneus/static-file-server) - static file server
 
 ### Software development
 * [Gitea](https://github.com/go-gitea/gitea) - git web service
@@ -42,6 +41,7 @@ All services are deployed using Docker compose and are run as a non-root user.
 * [Wireguard](https://github.com/linuxserver/docker-wireguard) - VPN server
 * [Homer](https://github.com/bastienwirtz/homer) - simple dashboard to keep services on hand
 * [mr.vercetti.cc](https://git.vercetti.cc/mr-vercetti/mr.vercetti.cc) - my personal blog
+* [static-file-server](https://github.com/halverneus/static-file-server) - static file server
 
 ## Storage solution
 I went with [MergerFS](https://github.com/trapexit/mergerfs) and [SnapRAID](https://github.com/amadvance/snapraid), which allows me a great deal of flexibility and still keeps my data safe. Array is synchronized and scrubbed automatically via [snapraid-runner](https://github.com/Chronial/snapraid-runner) running from crontab.

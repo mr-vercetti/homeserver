@@ -1,12 +1,12 @@
 services:
-   homer:
+   ogt-fs:
       image: halverneus/static-file-server
-      container_name: file-server
+      container_name: ogt-fs
       networks:
-         - file-server
+         - ogt-fs
          - proxy
       volumes:
-         - ${DATA_DIR}/file-server:/content/files
+         - ${DATA_DIR}/ogt-fs:/content/files
       environment:
          - FOLDER=/content/files
       ports:
@@ -17,5 +17,5 @@ networks:
    proxy:
       external:
          name: proxy
-   file-server:
-      name: file-server
+   ogt-fs:
+      name: ogt-fs
