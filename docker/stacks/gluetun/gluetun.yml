@@ -1,0 +1,20 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+    volumes:
+      - ${APPS_DIR}/gluetun:/gluetun
+    networks:
+      - gluetun
+    ports:
+      # qbittorrent
+      - '8183:8183'
+
+networks:
+  gluetun:
+    name: gluetun

@@ -83,6 +83,17 @@ services:
       ports:
          - 9696:9696
       restart: unless-stopped
+
+   flaresolverr:
+      image: ghcr.io/flaresolverr/flaresolverr
+      container_name: flaresolverr
+      networks:
+         - media
+      environment:
+         - TZ=${TIMEZONE}
+      ports:
+         - 8191:8191
+      restart: unless-stopped
    
    bazarr:
       image: lscr.io/linuxserver/bazarr
@@ -118,38 +129,39 @@ services:
          - 8686:8686
       restart: unless-stopped      
 
-   delugevpn:
-      image: binhex/arch-delugevpn
-      container_name: delugevpn
+   qbittorrent:
+      image: linuxserver/qbittorrent
+      container_name: qbittorrent
+      environment:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - TZ=${TIMEZONE}
+        - UMASK_SET=022
+        - WEBUI_PORT=8183
+      network_mode: "container:gluetun"
+      volumes:
+        - ${APPS_DIR}/qbittorrent/config:/config
+        - ${DATA_DIR}/downloads:/downloads
+        - ${APPS_DIR}/qbittorrent/vuetorrent:/vuetorrent
+      restart: unless-stopped
+
+   ytdl-material:
+      image: tzahi12345/youtubedl-material:sha-208cd83
+      container_name: ytdl-material
       networks:
          - media
-      cap_add:
-         - NET_ADMIN
       environment:
-         - PUID=${PUID}
-         - PGID=${PGID}
-         - TZ=${TIMEZONE}
-         - VPN_ENABLED=yes
-         - VPN_PROV=custom
-         - VPN_CLIENT=wireguard
-         - ENABLE_PRIVOXY=yes
-         - LAN_NETWORK=${LAN_NETWORK}
-         - NAME_SERVERS=1.1.1.1, 1.0.0.1
-         - DELUGE_DAEMON_LOG_LEVEL=info
-         - DELUGE_WEB_LOG_LEVEL=info
-         - DEBUG=true
-         - UMASK=000
+         - UID=${PUID}
+         - GID=${PGID}
+         - ALLOW_CONFIG_MUTATIONS=true
       volumes:
-         - ${APPS_DIR}/delugevpn:/config
-         - ${DATA_DIR}/downloads:/downloads
-         - /etc/localtime:/etc/localtime:ro
+         - ${APPS_DIR}/ytdl-material:/app/appdata
+         - ${DATA_DIR}/ytdl/audio:/app/audio
+         - ${DATA_DIR}/ytdl/video:/app/video
+         - ${DATA_DIR}/ytdl/subscriptions:/app/subscriptions
+         - ${DATA_DIR}/ytdl/users:/app/users
       ports:
-         - 8112:8112
-         - 58846:58846
-         - 8118:8118
-      sysctls:
-         - "net.ipv4.conf.all.src_valid_mark=1"
-      privileged: true
+         - "8998:17442"
       restart: unless-stopped
 
 networks:
