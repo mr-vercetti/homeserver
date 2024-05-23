@@ -1,0 +1,16 @@
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - UMASK_SET=022
+      - WEBUI_PORT=8183
+    network_mode: "container:gluetun"
+    volumes:
+      - ${APPS_DIR}/qbittorrent/config:/config
+      - ${DATA_DIR}/downloads:/downloads
+      - ${APPS_DIR}/qbittorrent/vuetorrent:/vuetorrent
+    restart: unless-stopped

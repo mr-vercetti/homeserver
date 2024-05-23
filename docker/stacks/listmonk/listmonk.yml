@@ -1,0 +1,39 @@
+services:
+  listmonk-db:
+    image: postgres:13-alpine
+    container_name: listmonk-db
+    environment:
+      - POSTGRES_PASSWORD=${LISTMONK_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${LISTMONK_POSTGRES_USER}
+      - POSTGRES_DB=${LISTMONK_POSTGRES_DB}
+    volumes:
+      - ${APPS_DIR}/listmonk/postgresql:/var/lib/postgresql/data
+    ports:
+      - "9432:5432"
+    networks:
+      - listmonk
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U listmonk"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+  listmonk:
+    image: listmonk/listmonk
+    container_name: listmonk
+    environment:
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${APPS_DIR}/listmonk/config.toml:/listmonk/config.toml
+    ports:
+      - "9000:9000"
+    networks:
+      - listmonk
+    depends_on:
+      - listmonk-db
+    restart: unless-stopped
+
+networks:
+  listmonk:
+    name: listmonk

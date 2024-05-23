@@ -1,0 +1,46 @@
+services:
+  ghostfolio:
+    image: ghostfolio/ghostfolio
+    container_name: ghostfolio
+    environment:
+      DATABASE_URL: ${GHOSTFOLIO_DB_URL}
+      NODE_ENV: production
+      REDIS_HOST: ghostfolio-cache
+      REDIS_PASSWORD: ${GHOSTFOLIO_REDIS_PASSWORD}
+      REDIS_PORT: 6379
+      JWT_SECRET_KEY: ${GHOSTFOLIO_JWT_SECRET_KEY}
+      ACCESS_TOKEN_SALT: ${GHOSTFOLIO_ACCESS_TOKEN_SALT}
+    ports:
+      - 3333:3333
+    networks:
+      - ghostfolio
+      - proxy
+    depends_on:
+      - ghostfolio-db
+      - ghostfolio-cache
+
+  ghostfolio-db:
+    image: postgres:15
+    container_name: ghostfolio-db
+    volumes:
+      - ${APPS_DIR}/ghostfolio/postgres:/var/lib/postgresql/data
+    networks:
+      - ghostfolio
+    environment:
+      - POSTRES_DB=${GHOSTFOLIO_DB}
+      - POSTGRES_USER=${GHOSTFOLIO_DB_USER}
+      - POSTGRES_PASSWORD=${GHOSTFOLIO_DB_PASSWORD}
+
+  ghostfolio-cache:
+    image: redis:alpine
+    container_name: ghostfolio-cache
+    networks:
+      - ghostfolio
+    command: ['redis-server', '--requirepass', $GHOSTFOLIO_REDIS_PASSWORD]
+
+networks:
+  ghostfolio:
+    name: ghostfolio
+  proxy:
+    external:
+      name: proxy
