@@ -13,7 +13,9 @@ services:
       - gluetun
     ports:
       # qbittorrent
-      - '8183:8183'
+      - "8183:8183"
+      # slskd
+      - "5030:5030"
 
 networks:
   gluetun:
