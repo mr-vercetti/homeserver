@@ -1,0 +1,33 @@
+   qbittorrentvpn:
+      image: binhex/arch-qbittorrentvpn
+      container_name: qbittorrentvpn
+      networks:
+         - media
+      cap_add:
+         - NET_ADMIN
+      environment:
+         - PUID=${PUID}
+         - PGID=${PGID}
+         - TZ=${TIMEZONE}
+         - VPN_ENABLED=yes
+         - VPN_PROV=custom
+         - VPN_CLIENT=wireguard
+         - ENABLE_PRIVOXY=no
+         - LAN_NETWORK=${LAN_NETWORK}
+         - NAME_SERVERS=1.1.1.1, 1.0.0.1
+         - WEBUI_PORT=8183
+         - DEBUG=true
+         - UMASK=000
+      volumes:
+         - ${APPS_DIR}/qbittorrentvpn:/config
+         - ${DATA_DIR}/downloads:/data
+         - /etc/localtime:/etc/localtime:ro
+      ports:
+         - 8183:8183
+         - 8118:8118
+         - 6881:6881
+         - 6881:6881/udp
+      sysctls:
+         - "net.ipv4.conf.all.src_valid_mark=1"
+      privileged: true
+      restart: unless-stopped

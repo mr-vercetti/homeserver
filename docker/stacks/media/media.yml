@@ -16,6 +16,7 @@ services:
          - ${APPS_DIR}/jellyfin:/config
          - ${DATA_DIR}/media/movies:/data/movies:ro
          - ${DATA_DIR}/media/tvshows:/data/tvshows:ro
+         - ${DATA_DIR}/media/music:/data/music:ro
       ports:
          - 8096:8096
       devices:
@@ -36,7 +37,7 @@ services:
          - ${DATA_DIR}/media/music:/media
    
    radarr:
-      image: lscr.io/linuxserver/radarr:4.3.2
+      image: lscr.io/linuxserver/radarr
       container_name: radarr
       networks:
          - media
@@ -129,38 +130,20 @@ services:
          - 8686:8686
       restart: unless-stopped      
 
-   qbittorrentvpn:
-      image: binhex/arch-qbittorrentvpn
-      container_name: qbittorrentvpn
-      networks:
-         - media
-      cap_add:
-         - NET_ADMIN
+   qbittorrent:
+      image: linuxserver/qbittorrent
+      container_name: qbittorrent
       environment:
-         - PUID=${PUID}
-         - PGID=${PGID}
-         - TZ=${TIMEZONE}
-         - VPN_ENABLED=yes
-         - VPN_PROV=custom
-         - VPN_CLIENT=wireguard
-         - ENABLE_PRIVOXY=yes
-         - LAN_NETWORK=${LAN_NETWORK}
-         - NAME_SERVERS=1.1.1.1, 1.0.0.1
-         - WEBUI_PORT=8183
-         - DEBUG=true
-         - UMASK=000
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - TZ=${TIMEZONE}
+        - UMASK_SET=022
+        - WEBUI_PORT=8183
+      network_mode: "container:gluetun"
       volumes:
-         - ${APPS_DIR}/qbittorrentvpn:/config
-         - ${DATA_DIR}/downloads:/data
-         - /etc/localtime:/etc/localtime:ro
-      ports:
-         - 8183:8183
-         - 8118:8118
-         - 6881:6881
-         - 6881:6881/udp
-      sysctls:
-         - "net.ipv4.conf.all.src_valid_mark=1"
-      privileged: true
+        - ${APPS_DIR}/qbittorrent/config:/config
+        - ${DATA_DIR}/downloads:/downloads
+        - ${APPS_DIR}/qbittorrent/vuetorrent:/vuetorrent
       restart: unless-stopped
 
    ytdl-material:

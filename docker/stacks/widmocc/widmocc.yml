@@ -1,0 +1,17 @@
+services:
+   widmocc:
+      image: mrvercetti/widmocc
+      container_name: widmocc
+      networks:
+         - widmocc
+         - proxy
+      ports:
+         - 1313:80
+      restart: unless-stopped
+
+networks:
+   proxy:
+      external:
+         name: proxy
+   widmocc:
+      name: widmocc

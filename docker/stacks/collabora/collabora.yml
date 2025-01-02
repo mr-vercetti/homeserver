@@ -1,6 +1,6 @@
 services:
   collabora:
-    image: collabora/code
+    image: collabora/code:24.04.6.1.1
     container_name: collabora
     environment:
       - password=${COLLABORA_PASSWORD}
