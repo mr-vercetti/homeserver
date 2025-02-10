@@ -11,7 +11,7 @@ services:
 
 networks:
    proxy:
-      external:
-         name: proxy
+      name: proxy
+      external: true
    widmocc:
       name: widmocc

@@ -13,24 +13,27 @@ case "$command" in
   "up")
     for stack in "$BASE_DIR"/stacks/*/*
     do
-      docker-compose -f "${stack}" --env-file "$BASE_DIR/.env" up -d
+      docker compose -f "${stack}" --env-file "$BASE_DIR/.env" up -d
     done
     ;;
   "stop" | "restart")
     for stack in "$BASE_DIR"/stacks/*/*
     do
-      docker-compose -f "${stack}" --env-file "$BASE_DIR/.env" $command
+      docker compose -f "${stack}" --env-file "$BASE_DIR/.env" $command
     done
     ;;
-  "recreate")
-    if [ $# -lt 3 ]; then
-      echo "Please provide both the stack name and the service to recreate"
+"recreate")
+    if [ $# -eq 2 ]; then
+      stack_name="$2"
+      service_name="$2"
+    elif [ $# -eq 3 ]; then
+      stack_name="$2"
+      service_name="$3"
+    else
       echo "Usage: $0 recreate <stack_name> <service_name>"
       exit 1
     fi
 
-    stack_name="$2"
-    service="$3"
     stack_file="$BASE_DIR/stacks/${stack_name}/${stack_name}.yml"
 
     if [ ! -f "$stack_file" ]; then
@@ -38,9 +41,9 @@ case "$command" in
       exit 1
     fi
 
-    docker-compose -f "${stack_file}" --env-file "$BASE_DIR/.env" stop "$service"
-    docker-compose -f "${stack_file}" --env-file "$BASE_DIR/.env" rm -f "$service"
-    docker-compose -f "${stack_file}" --env-file "$BASE_DIR/.env" up -d "$service"
+    docker compose -f ${stack_file} --env-file "$BASE_DIR/.env" stop ${service_name}
+    docker compose -f ${stack_file} --env-file "$BASE_DIR/.env" rm -f ${service_name}
+    docker compose -f ${stack_file} --env-file "$BASE_DIR/.env" up -d ${service_name}
     ;;
   *)
     echo "Wrong command. Please use 'up', 'stop', 'restart', or 'recreate'"

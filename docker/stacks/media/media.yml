@@ -165,9 +165,26 @@ services:
          - "8998:17442"
       restart: unless-stopped
 
+   slskd:
+    image: slskd/slskd
+    container_name: slskd
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TIMEZONE}
+      - SLSKD_REMOTE_FILE_MANAGEMENT=true
+      - SLSKD_SLSK_USERNAME=${SLSKD_SLSK_USERNAME}
+      - SLSKD_SLSK_PASSWORD=${SLSKD_SLSK_PASSWORD}
+      - SLSKD_SHARED_DIR=/app/downloads
+    network_mode: "container:gluetun"
+    volumes:
+      - ${APPS_DIR}/slskd:/app/data
+      - ${DATA_DIR}/downloads/slskd/incomplete:/app/incomplete
+      - ${DATA_DIR}/media/music:/app/downloads
+    restart: unless-stopped
+
 networks:
    proxy:
-      external:
-         name: proxy
+      name: proxy
+      external: true
    media:
       name: media
