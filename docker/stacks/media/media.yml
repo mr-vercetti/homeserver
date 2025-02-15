@@ -24,6 +24,22 @@ services:
          - /dev/dri/card0:/dev/dri/card0
       restart: unless-stopped
 
+   jellyseerr:
+      image: fallenbagel/jellyseerr
+      container_name: jellyseerr
+      networks:
+          - proxy
+          - media
+      environment:
+        - LOG_LEVEL=debug
+        - TZ=${TIMEZONE}
+        - PORT=5055
+      ports:
+        - 5055:5055
+      volumes:
+        - ${APPS_DIR}/jellyserr:/app/config
+      restart: unless-stopped
+
    minidlna:
       image: vladgh/minidlna
       container_name: minidlna
