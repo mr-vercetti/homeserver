@@ -34,9 +34,45 @@ services:
       - "/dev/nvme0"
     restart: unless-stopped
 
+  beszel:
+    image: henrygd/beszel
+    container_name: beszel
+    networks:
+      - monitoring
+    ports:
+      - 8091:8090
+    volumes:
+      - ${APPS_DIR}/beszel:/beszel_data
+    restart: unless-stopped
+
+  beszel-agent:
+    image: henrygd/beszel-agent
+    container_name: beszel-agent
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/parity/.beszel:/extra-filesystems/sdc1:ro
+      - /mnt/disk1/.beszel:/extra-filesystems/sdb1:ro
+    environment:
+      - PORT=45876
+      # Do not remove quotes around the key
+      - KEY=${BESZEL_SSH_KEY}
+    restart: unless-stopped
+
+  dozzle:
+    image: amir20/dozzle
+    container_name: dozzle
+    networks:
+      - monitoring
+    ports:
+      - 8081:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
 networks:
    proxy:
-      external:
-         name: proxy
+      name: proxy
+      external: true
    monitoring:
       name: monitoring
