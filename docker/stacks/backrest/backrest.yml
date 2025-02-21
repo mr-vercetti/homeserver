@@ -1,0 +1,26 @@
+services:
+  backrest:
+    image: garethgeorge/backrest
+    container_name: backrest
+    networks:
+      - backrest
+    ports:
+      - 9898:9898
+    volumes:
+      - ${APPS_DIR}/backrest/data:/data
+      - ${APPS_DIR}/backrest/config:/config
+      - ${APPS_DIR}/backrest/cache:/cache
+      - /apps:/userdata/docker # [optional] mount local paths to backup here.
+      - ${DATA_DIR}/nextcloud-data:/userdata/nextcloud
+      - ${DATA_DIR}/backup/hustler:/repos/hustler # [optional] mount repos if using local storage, not necessary for remotes e.g. B2, S3, etc.
+      - /var/run/docker.sock:/var/run/docker.sock:ro # [optional] if you want to manage containers before/after backup
+    environment:
+      - BACKREST_DATA=/data # path for backrest data. restic binary and the database are placed here.
+      - BACKREST_CONFIG=/config/config.json # path for the backrest config file.
+      - XDG_CACHE_HOME=/cache # path for the restic cache which greatly improves performance.
+      - TZ=${TIMEZONE} # set the timezone for the container, used as the timezone for cron jobs.
+    restart: unless-stopped
+
+networks:
+  backrest:
+    name: backrest
