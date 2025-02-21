@@ -51,8 +51,10 @@ services:
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /mnt/parity/.beszel:/extra-filesystems/sdc1:ro
+      - /mnt/parity1/.beszel:/extra-filesystems/sdd1:ro
       - /mnt/disk1/.beszel:/extra-filesystems/sdb1:ro
+      - /mnt/disk2/.beszel:/extra-filesystems/sda1:ro
+      - /mnt/disk3/.beszel:/extra-filesystems/sdc1:ro
     environment:
       - PORT=45876
       # Do not remove quotes around the key
