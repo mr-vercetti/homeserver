@@ -182,21 +182,55 @@ services:
       restart: unless-stopped
 
    slskd:
-    image: slskd/slskd
-    container_name: slskd
-    user: ${PUID}:${PGID}
-    environment:
-      - TZ=${TIMEZONE}
-      - SLSKD_REMOTE_FILE_MANAGEMENT=true
-      - SLSKD_SLSK_USERNAME=${SLSKD_SLSK_USERNAME}
-      - SLSKD_SLSK_PASSWORD=${SLSKD_SLSK_PASSWORD}
-      - SLSKD_SHARED_DIR=/app/downloads
-    network_mode: "container:gluetun"
-    volumes:
-      - ${APPS_DIR}/slskd:/app/data
-      - ${DATA_DIR}/downloads/slskd/incomplete:/app/incomplete
-      - ${DATA_DIR}/media/music:/app/downloads
-    restart: unless-stopped
+      image: slskd/slskd
+      container_name: slskd
+      user: ${PUID}:${PGID}
+      environment:
+        - TZ=${TIMEZONE}
+        - SLSKD_REMOTE_FILE_MANAGEMENT=true
+        - SLSKD_SLSK_USERNAME=${SLSKD_SLSK_USERNAME}
+        - SLSKD_SLSK_PASSWORD=${SLSKD_SLSK_PASSWORD}
+        - SLSKD_SHARED_DIR=/app/downloads
+      network_mode: "container:gluetun"
+      volumes:
+        - ${APPS_DIR}/slskd:/app/data
+        - ${DATA_DIR}/downloads/slskd/incomplete:/app/incomplete
+        - ${DATA_DIR}/media/music:/app/downloads
+      restart: unless-stopped
+
+   calibre:
+      image: crocodilestick/calibre-web-automated
+      container_name: calibre
+      environment:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - TZ=${TIMEZONE}
+      volumes:
+        - ${APPS_DIR}/calibre:/config
+        - ${DATA_DIR}/calibre/ingest:/cwa-book-ingest
+        - ${DATA_DIR}/calibre/library:/calibre-library
+      networks:
+        - media
+      ports:
+        - 8083:8083
+      restart: unless-stopped
+
+   calibre-downloader:
+      image: ghcr.io/calibrain/calibre-web-automated-book-downloader
+      container_name: calibre-downloader
+      environment:
+        - FLASK_PORT=8084
+        - FLASK_DEBUG=false
+        - CLOUDFLARE_PROXY_URL=http://flaresolverr:8191
+        - INGEST_DIR=/cwa-book-ingest
+        - BOOK_LANGUAGE=pl
+      volumes:
+        - ${DATA_DIR}/calibre/ingest:/cwa-book-ingest
+      networks:
+        - media
+      ports:
+        - 8084:8084
+      restart: unless-stopped
 
 networks:
    proxy:
