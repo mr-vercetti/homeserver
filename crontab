@@ -1,6 +1,6 @@
 # SnapRAID
-30 4 * * 0 python3 /opt/snapraid-runner/snapraid-runner.py --conf /etc/snapraid-runner.conf --ignore-deletethreshold
+30 4 * * * python3 /opt/snapraid-runner/snapraid-runner.py --conf /etc/snapraid-runner.conf --ignore-deletethreshold
 # LG TV renew dev mode (https://github.com/webosbrew/dev-manager-desktop)
 0 * * * * /etc/tv-renew-devmode.sh >> /var/log/tv-renew-devmode.log 2>&1
 # DNS issues fix with Torguard
-0 5 * * * /apps/homeserver/docker/torguard-fix.sh
+0 1 * * * /apps/homeserver/docker/torguard-fix.sh
