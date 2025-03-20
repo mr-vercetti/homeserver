@@ -1,0 +1,66 @@
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    user: "0"
+    volumes:
+      - ${APPS_DIR}/monitoring/grafana:/var/lib/grafana
+    ports:
+      - "3005:3000"
+    networks:
+      - monitoring
+    restart: unless-stopped
+    
+  loki:
+    image: grafana/loki
+    container_name: loki
+    volumes:
+      - ${APPS_DIR}/monitoring/loki:/etc/loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki-config.yml -config.expand-env=true
+    networks:
+      - monitoring
+    restart: unless-stopped
+      
+  promtail:
+    image: grafana/promtail
+    container_name: promtail
+    volumes:
+      - /var/log:/var/log  #map the log folder.
+      - ${APPS_DIR}/monitoring/promtail:/etc/promtail
+    command: -config.file=/etc/promtail/promtail-config.yml
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ${APPS_DIR}/monitoring/prometheus:/etc/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    network_mode: host # Not compatible with ports declaration. This service will expose port 9100.
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+
+networks:
+  monitoring:

@@ -1,0 +1,16 @@
+services:
+   quakejs:
+      image: treyyoder/quakejs
+      container_name: quakejs
+      networks:
+         - quakejs
+      environment:
+         - HTTP_PORT=9011
+         - SERVER=192.168.0.100
+      ports:
+         - "9011:80"
+         - "27960:27960"
+
+networks:
+   quakejs:
+      name: quakejs

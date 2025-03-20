@@ -1,0 +1,18 @@
+services:
+   blackmesa:
+      image: mrvercetti/blackmesa-coop-server
+      container_name: blackmesa
+      environment:
+         - GAME_PARAMS=-port 27015 +maxplayers 2 +map bm_c1a1d -debug
+         - GAME_NAME=${BLACKMESA_SERVER_NAME}
+         - GAME_PASSWORD=${BLACKMESA_SERVER_PASSWORD}
+      networks:
+         - blackmesa
+      ports:
+         - ${BLACKMESA_SERVER_PORT}:27015
+         - ${BLACKMESA_SERVER_PORT}:27015/udp
+      restart: unless-stopped
+
+networks:
+   blackmesa:
+      name: blackmesa

@@ -1,0 +1,28 @@
+services:
+  api:
+    image: localai/localai:v2.10.1-ffmpeg-core 
+    container_name: localai-api
+    ports:
+      - 8877:8080
+    networks:
+      - localai
+    volumes:
+      - ${APPS_DIR}/localai/models:/models:cached
+    command: ["tinyllama-chat"]
+
+  chatgpt:
+    depends_on:
+      api:
+        condition: service_healthy
+    image: ghcr.io/mckaywrigley/chatbot-ui:main
+    ports:
+      - 3003:3000
+    networks:
+      - localai
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_HOST=http://api:8080
+
+networks:
+  localai:
+    name: localai

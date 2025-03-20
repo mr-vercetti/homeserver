@@ -1,0 +1,28 @@
+services:
+   minecraft:
+      image: itzg/minecraft-server
+      container_name: minecraft
+      networks:
+         - minecraft
+      ports:
+         - ${MINECRAFT_SERVER_PORT}:25565
+      environment:
+         - VERSION=1.20.4
+         - OVERRIDE_SERVER_PROPERTIES=true
+         - EULA=TRUE
+         - MAX_PLAYERS=4
+         - MOTD=${MINECRAFT_SERVER_MOTD}
+         - DIFFICULTY=easy
+         - ALLOW_NETHER=true
+         - ONLINE_MODE=FALSE
+         - ENABLE_RCON=true
+         - SERVER_NAME=${MINECRAFT_SERVER_NAME}
+      volumes:
+         - ${DATA_DIR}/minecraft-data:/data
+      tty: true
+      stdin_open: true
+      restart: unless-stopped
+
+networks:
+   minecraft:
+      name: minecraft     

@@ -1,0 +1,18 @@
+services:
+   svencoop:
+      image: mrvercetti/svencoop-server
+      container_name: svencoop
+      environment:
+         - GAME_NAME=${SVENCOOP_SERVER_NAME}
+         - GAME_PASSWORD=${SVENCOOP_SERVER_PASSWORD}
+         - GAME_PARAMS="-num_edicts 3072 +sv_lan 0 +map hl_c16_a1 -port 27015 -console -debug;"
+      networks:
+         - svencoop
+      ports:
+         - ${SVENCOOP_SERVER_PORT}:27015
+         - ${SVENCOOP_SERVER_PORT}:27015/udp
+      restart: unless-stopped
+
+networks:
+   svencoop:
+      name: svencoop

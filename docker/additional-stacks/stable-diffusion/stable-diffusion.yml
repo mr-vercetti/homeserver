@@ -1,0 +1,25 @@
+services:
+  stable-diffusion:
+    image: ghcr.io/ai-dock/stable-diffusion-webui:latest-cpu
+    container_name: stable-diffusion-webui
+    devices:
+      - "/dev/dri:/dev/dri"
+    volumes:
+      - ${APPS_DIR}/stable-diffusion/workspace:${WORKSPACE:-/workspace/}:rshared
+      - ${APPS_DIR}/stable-diffusion/config/provisioning/default.sh:/opt/ai-dock/bin/provisioning.sh
+    ports:
+      - ${WEBUI_PORT_HOST:-7860}:${WEBUI_PORT_HOST:-7860}
+    networks:
+      - stable-diffusion
+    environment:
+      - DIRECT_ADDRESS=${DIRECT_ADDRESS:-127.0.0.1}
+      - WORKSPACE=/workspace
+      - WORKSPACE_SYNC=false
+      - WEB_ENABLE_AUTH=false
+      - WEBUI_PORT_HOST=${WEBUI_PORT_HOST:-7860}
+      - WEBUI_PORT_LOCAL=${WEBUI_PORT_LOCAL:-17860}
+      - WEBUI_METRICS_PORT=${WEBUI_METRICS_PORT:-27860}
+
+networks:
+  stable-diffusion:
+    name: stable-diffusion
